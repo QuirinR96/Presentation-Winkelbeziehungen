@@ -1,10 +1,16 @@
 from manim import *
 from manim_slides import Slide
 
-class Scene(Slide):
+class Start(Slide):
     def construct(self):
-        "Code"
+        self.wait()
 
         self.next_slide()
 
-        "Code"
+        title = Text("Winkelbeziehungen", font_size=100)
+
+        self.play(Write(title))
+
+        self.next_slide()
+
+        self.play(FadeOut(title))
