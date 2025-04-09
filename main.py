@@ -383,6 +383,96 @@ class Nebenwinkel(Slide):
 
         self.play(Unwrite(title))
 
+class Scheitelwinkel(Slide):
+    def construct(self):
+        title = Title("Scheitelwinkel")
+
+        self.play(Write(title))
+
+        self.next_slide()
+
+        mainLine = Line(LEFT, RIGHT)
+        movingLine = Line(LEFT, RIGHT)
+        referenceLine = movingLine.copy()
+
+        movingLine.rotate_about_origin(60 * DEGREES)
+
+        angle1 = Angle(mainLine, movingLine, quadrant=(1, 1), color=RED)
+        angle2 = Angle(mainLine, movingLine, quadrant=(-1, 1), color=BLUE, other_angle=True)
+        angle3 = Angle(mainLine, movingLine, quadrant=(-1, -1), color=RED)
+        angle4 = Angle(mainLine, movingLine, quadrant=(1, -1), color=BLUE, other_angle=True)
+
+        self.play(Create(mainLine))
+        self.play(Create(movingLine))
+        self.play(LaggedStart(
+            Create(angle1), 
+            Create(angle2),
+            Create(angle3),
+            Create(angle4),
+            lag_ratio=1 / 5
+            )
+        )
+
+        self.next_slide()
+
+        tracker = ValueTracker(60)
+
+        movingLine.add_updater(
+            lambda movingLine: movingLine.become(
+                referenceLine.copy().rotate_about_origin(tracker.get_value() * DEGREES)
+            )
+        )
+
+        angle1.add_updater(
+            lambda angle1: angle1.become(
+                Angle(mainLine, movingLine, quadrant=(1, 1), color=RED)
+            )
+        )
+
+        angle2.add_updater(
+            lambda angle2: angle2.become(
+                Angle(mainLine, movingLine, quadrant=(-1, 1), color=BLUE, other_angle=True)
+            )
+        )
+
+        angle3.add_updater(
+            lambda angle3: angle3.become(
+                Angle(mainLine, movingLine, quadrant=(-1, -1), color=RED)
+            )
+        )
+
+        angle4.add_updater(
+            lambda angle4: angle4.become(
+                Angle(mainLine, movingLine, quadrant=(1, -1), color=BLUE, other_angle=True)
+            )
+        )
+
+        self.next_slide(loop=True)
+
+        self.play(tracker.animate.set_value(175))
+        self.play(tracker.animate.set_value(60))
+        self.play(tracker.animate.set_value(120))
+        self.play(tracker.animate.set_value(30))
+        self.play(tracker.animate.set_value(135))
+        self.play(tracker.animate.set_value(80))
+        self.play(tracker.animate.set_value(160))
+        self.play(tracker.animate.set_value(45))
+        self.play(tracker.animate.set_value(90))
+
+        self.next_slide()
+
+        self.play(
+            FadeOut(mainLine),
+            FadeOut(movingLine),
+            FadeOut(angle1),
+            FadeOut(angle2),
+            FadeOut(angle3),
+            FadeOut(angle4)
+        )
+
+        self.play(Unwrite(title))
+
+
 class Test(Slide):
     def construct(self):
         ""
