@@ -473,6 +473,79 @@ class Scheitelwinkel(Slide):
         self.play(Unwrite(title))
 
 
+class Stufenwinkel(Slide):
+    def construct(self):
+        ""
+        title = Title("Stufenwinkel")
+
+        self.play(Write(title))
+
+        self.next_slide()
+
+        tracker = ValueTracker(60)
+
+        line1 = Line(LEFT * 2, RIGHT * 2)
+        line2 = line1.copy()
+        movingLine = Line(LEFT * 2.5, RIGHT * 2.5)
+        referenceLine = movingLine.copy()
+
+        movingLine.rotate(60 * DEGREES)
+
+        angle1 = Angle(line1, movingLine, quadrant=(1, 1), color=RED).add_updater(
+            lambda angle1: angle1.become(Angle(line1, movingLine, quadrant=(1, 1), color=RED))
+        )
+
+        angle2 = Angle(line2, movingLine, quadrant=(1, 1), color=RED).add_updater(
+            lambda angle2: angle2.become(Angle(line2, movingLine, quadrant=(1, 1), color=RED))
+        )
+
+        movingLine.add_updater(
+            lambda movingLine: movingLine.become(referenceLine.copy().rotate_about_origin(tracker.get_value() * DEGREES))
+        )
+
+        self.play(
+            Create(line1),
+            Create(line2),
+            Create(movingLine)
+        )
+
+        self.play(
+            Create(angle1),
+            Create(angle2)
+        )
+
+        self.next_slide()
+
+        self.play(
+            line1.animate().shift(UP),
+            line2.animate().shift(DOWN)
+        )
+
+        self.next_slide()
+
+        self.next_slide(loop=True)
+
+        self.play(tracker.animate(run_time=2).set_value(120))
+        self.play(tracker.animate(run_time=2).set_value(40))
+        self.play(tracker.animate(run_time=2).set_value(90))
+        self.play(tracker.animate(run_time=2).set_value(70))
+        self.play(tracker.animate(run_time=2).set_value(110))
+        self.play(tracker.animate(run_time=2).set_value(80))
+        self.play(tracker.animate(run_time=2).set_value(140))
+        self.play(tracker.animate(run_time=2).set_value(60))
+        
+        self.next_slide()
+
+        self.play(
+            FadeOut(line1),
+            FadeOut(line2),
+            FadeOut(movingLine),
+            FadeOut(angle1),
+            FadeOut(angle2)
+        )
+
+        self.play(Unwrite(title))
+
 class Test(Slide):
     def construct(self):
         ""
