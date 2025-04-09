@@ -13,7 +13,28 @@ class Start(Slide):
 
         self.next_slide()
 
-        self.play(FadeOut(title))
+        self.play(Unwrite(title))
+
+        title = Title("Gliederung")
+
+        text = BulletedList(
+            "Basics von Winkeln",
+            "Nebenwinkel",
+            "Scheitelwinkel",
+            "Stufenwinkel",
+            "Wechselwinkel",
+            "Quellen"
+        )
+
+        self.play(Write(title))
+        self.play(Write(text))
+
+        self.next_slide()
+
+        self.play(
+            Unwrite(title),
+            Unwrite(text)
+        )
 
 class IntroAngles(Slide):
     def construct(self):
