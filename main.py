@@ -286,6 +286,102 @@ class IntroAngles(Slide):
         )
         self.play(Unwrite(title))
 
+class Nebenwinkel(Slide):
+    def construct(self):
+        title = Title("Nebenwinkel")
+
+        self.play(Write(title))
+
+        self.next_slide()
+
+        mainLine = Line(LEFT, RIGHT)
+        movingLine = Line(ORIGIN, RIGHT)
+        referenceLine = movingLine.copy()
+
+        movingLine.rotate_about_origin(90 * DEGREES)
+
+        angle1 = Angle(mainLine, movingLine, quadrant=(1, 1), color=RED)
+        angle2 = Angle(mainLine, movingLine, quadrant=(-1, 1), color=BLUE, other_angle=True)
+
+        valueAngle1 = Text("90°", color=RED)
+        plus = Text(" + ")
+        valueAngle2 = Text("90°", color=BLUE)
+        equals = Text(" = 180°")
+
+        text1 = VGroup(valueAngle1, plus, valueAngle2, equals).arrange().shift(UP * 2.5)
+
+        self.play(Create(mainLine))
+        self.play(Create(movingLine))
+        self.play(LaggedStart(Create(angle1), Create(angle2), lag_ratio=1 / 3))
+        self.play(Write(text1))
+
+        self.next_slide()
+
+        tracker = ValueTracker(90)
+
+        movingLine.add_updater(
+            lambda movingLine: movingLine.become(
+                referenceLine.copy().rotate_about_origin(tracker.get_value() * DEGREES)
+            )
+        )
+
+        angle1.add_updater(
+            lambda angle1: angle1.become(
+                Angle(mainLine, movingLine, quadrant=(1, 1), color=RED)
+            )
+        )
+
+        angle2.add_updater(
+            lambda angle2: angle2.become(
+                Angle(mainLine, movingLine, quadrant=(-1, 1), color=BLUE, other_angle=True)
+            )
+        )
+
+        valueAngle1.add_updater(
+            lambda valueAngle1: valueAngle1.become(
+                Text(f"{180 - round(tracker.get_value())}°", color=RED)
+                .move_to(valueAngle1)
+            )
+        )
+
+        valueAngle2.add_updater(
+            lambda valueAngle2: valueAngle2.become(
+                Text(f"{round(tracker.get_value())}°", color=BLUE)
+                .move_to(valueAngle2)
+            )
+        )
+
+        text1.add_updater(
+            lambda text1: text1.become(
+                VGroup(valueAngle1, plus, valueAngle2, equals)
+                .arrange()
+                .shift(UP * 2.5)
+            )
+        )
+
+        self.next_slide(loop=True)
+
+        self.play(tracker.animate.set_value(30))
+        self.play(tracker.animate.set_value(175))
+        self.play(tracker.animate.set_value(60))
+        self.play(tracker.animate.set_value(120))
+        self.play(tracker.animate.set_value(45))
+        self.play(tracker.animate.set_value(135))
+        self.play(tracker.animate.set_value(80))
+        self.play(tracker.animate.set_value(160))
+        self.play(tracker.animate.set_value(90))
+
+        self.next_slide()
+
+        self.play(
+            FadeOut(mainLine),
+            FadeOut(movingLine),
+            FadeOut(angle1),
+            FadeOut(angle2),
+            FadeOut(text1)
+        )
+
+        self.play(Unwrite(title))
 
 class Test(Slide):
     def construct(self):
