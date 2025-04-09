@@ -619,6 +619,14 @@ class Wechselwinkel(Slide):
 
         self.play(Unwrite(title))
 
-class Test(Slide):
+class Sources(Slide):
     def construct(self):
-        ""
+        title = Title("Quellen")
+
+        text = BulletedList(
+            "eigenes Wissen",
+            'Bettermarks – "Beziehungen zwischen Winkeln"'
+        )
+
+        self.play(Write(title))
+        self.play(Write(text))
