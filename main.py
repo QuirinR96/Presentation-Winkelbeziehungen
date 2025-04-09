@@ -87,30 +87,15 @@ class IntroAngles(Slide):
 
         self.next_slide()
 
-        incompletetable = MathTable(
+        table1 = MathTable(
             [
-                [ "A",       "B",      "C",       "D",       "E",        "F"],
-                [r"\alpha", r"\beta", r"\gamma", r"\delta", r"\epsilon", "?"]
+                [ "A",       "B",      "C",       "D",       "E"       ],
+                [r"\alpha", r"\beta", r"\gamma", r"\delta", r"\epsilon"]
             ], 
             include_outer_lines=True
         ).scale(1).to_edge(DOWN, buff=SMALL_BUFF)
 
-        self.play(Create(incompletetable, run_time=3))
-
-        self.next_slide()
-
-        completetable = MathTable(
-            [
-                [ "A",       "B",      "C",       "D",       "E",        "F"],
-                [r"\alpha", r"\beta", r"\gamma", r"\delta", r"\epsilon", r"\zeta"]
-            ], 
-            include_outer_lines=True
-        ).scale(1).to_edge(DOWN, buff=SMALL_BUFF)
-
-        self.play(
-            FadeOut(incompletetable),
-            FadeIn(completetable)
-        )
+        self.play(Create(table1, run_time=3))
 
         # ==========
 
@@ -122,7 +107,7 @@ class IntroAngles(Slide):
             FadeOut(line2), 
             FadeOut(angle1), 
             FadeOut(label1), 
-            FadeOut(completetable), 
+            FadeOut(table1), 
             run_time=3
         )
 
