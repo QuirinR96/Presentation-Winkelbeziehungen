@@ -126,6 +126,181 @@ class IntroAngles(Slide):
             run_time=3
         )
 
+        radius = 2
+        dotRadius = 0.25
+        angleRadius = 0.75
+        labels = [r"\alpha", r"\beta", r"\gamma", r"\delta", r"\epsilon"]
+        quadrant = (-1, 1)
+
+        dots = VGroup(
+            LabeledDot(chr(65 + index), radius=dotRadius)
+            .shift(RIGHT * radius)
+            .rotate_about_origin(TAU / 6 * index)
+            for index in range(6)
+        )
+
+        lines = VGroup(
+            Line(dots[index], dots[(index + 1) % 6])
+            for index in range(6)
+        )
+
+        angles = VGroup(
+            Angle(lines[index - 1], lines[index], radius=angleRadius, quadrant=quadrant, other_angle=True)
+            for index in range(6)
+        )
+
+        self.play(LaggedStart(Create(dots), lag_ratio=3 / 7, run_time=3))
+        self.play(LaggedStart(Create(lines), lag_ratio=3 / 7, run_time=3))
+        self.play(LaggedStart(Create(angles), lag_ratio=3 / 7, run_time=3))
+
+        self.next_slide()
+
+        angleLabels = [
+            MathTex(label).scale(0.75).move_to(
+                Angle(
+                    lines[index - 1], lines[index],
+                    radius=angleRadius / 1.5, quadrant=quadrant, other_angle=True
+                ).point_from_proportion(0.5)
+            )
+            for index, label in enumerate(labels)
+        ]
+
+        self.play(Write(angleLabels[0], run_time=0.5))
+        self.play(Write(angleLabels[1], run_time=0.5))
+        self.play(Write(angleLabels[2], run_time=0.5))
+        self.play(Write(angleLabels[3], run_time=0.5))
+        self.play(Write(angleLabels[4], run_time=0.5))
+
+        self.next_slide()
+
+        zetaCenter = Angle(
+                    lines[4], lines[5],
+                    radius=angleRadius / 1.5, quadrant=quadrant, other_angle=True
+                ).point_from_proportion(0.5)
+
+        arrow1 = Arrow(zetaCenter + RIGHT * 2 + DOWN, zetaCenter, buff=0)
+
+        text1 = Text("der hier").shift(zetaCenter + RIGHT * 2 + DOWN * 1.5)
+
+        cross1 = VGroup(
+            Line(LEFT, RIGHT, color=RED).rotate(30 * DEGREES),
+            Line(LEFT, RIGHT, color=RED).rotate(-30 * DEGREES)
+        )
+
+        cross2 = VGroup(
+            Line(LEFT, RIGHT, color=RED).rotate(30 * DEGREES),
+            Line(LEFT, RIGHT, color=RED).rotate(-30 * DEGREES)
+        )
+
+        self.play(GrowArrow(arrow1))
+        self.play(Write(text1))
+
+        self.next_slide()
+
+        text2 = Tex(r"sin(dem dort)").to_corner(DR, buff=0.25)
+
+        self.play(Write(text2))
+
+        self.next_slide()
+
+        self.play(
+            Create(cross1.move_to(text1)),
+            Create(cross2.move_to(text2))
+        )
+
+        # ==========
+
+        self.next_slide()
+
+        self.play(
+            FadeOut(dots),
+            FadeOut(lines), 
+            FadeOut(angles),
+            FadeOut(VGroup(*angleLabels)),
+            FadeOut(arrow1), 
+            FadeOut(text1), 
+            FadeOut(cross1), 
+            FadeOut(cross2),
+            FadeOut(text2)
+        )
+
+        dotA = LabeledDot("A").shift(DOWN + 2 * RIGHT)
+        dotB = LabeledDot("B").shift(UP + 2 * RIGHT)
+        dotS = LabeledDot("S")
+
+        line1 = Line(ORIGIN, DOWN + 2 * RIGHT)
+        line2 = Line(ORIGIN, UP + 2 * RIGHT)
+        movingLine = Line(ORIGIN, RIGHT * (5 ** 0.5), color=RED)
+        
+        angle1 = Angle(line1, line2, radius=0.75)
+
+        text1 = Text("Winkel: ∢???").to_edge(UP, buff=1.5)
+        text2 = Text("Winkel: ∢?S?").to_edge(UP, buff=1.5)
+        text3 = Text("Winkel: ∢AS?").to_edge(UP, buff=1.5)
+        text4 = Text("Winkel: ∢ASB").to_edge(UP, buff=1.5)
+
+        arrow1 = Arrow(dotS, text2.get_center() + DOWN * 0.25 + RIGHT * 1.5)
+        arrow2 = Arrow(dotA, text3.get_center() + DOWN * 0.25 + RIGHT * 1.5)
+        arrow3 = Arrow(dotB, text4.get_center() + DOWN * 0.25 + RIGHT * 1.5)
+
+        self.play(LaggedStart(
+            Create(dotS),
+            Create(dotA),
+            Create(dotB),
+            lag_ratio=1 / 4
+        ))
+
+        self.play(LaggedStart(
+            Create(line1),
+            Create(line2),
+            lag_ratio=1 / 3
+        ))
+        self.add(dotS, dotA, dotB)
+
+        self.play(Create(angle1))
+        self.play(Write(text1))
+
+        self.next_slide()
+
+        self.play(Circumscribe(dotS, Circle))
+        self.play(GrowArrow(arrow1))
+        self.play(FadeOut(text1), FadeIn(text2))
+
+        self.next_slide()
+
+        self.play(FadeOut(arrow1))
+        self.play(Create(movingLine))
+
+        self.next_slide()
+
+        self.play(Rotate(movingLine, (-26.57 * DEGREES), about_point = ORIGIN))
+        self.play(Circumscribe(dotA, Circle))
+        self.play(GrowArrow(arrow2))
+        self.play(FadeOut(text2), FadeIn(text3))
+
+        self.next_slide()
+
+        self.play(FadeOut(arrow2))
+        self.play(Rotate(movingLine, (2 * 26.57 * DEGREES), about_point = ORIGIN))
+        self.play(Circumscribe(dotB, Circle))
+        self.play(GrowArrow(arrow3))
+        self.play(FadeOut(text3), FadeIn(text4))
+
+        self.next_slide()
+
+        self.play(
+            FadeOut(dotA),
+            FadeOut(dotB),
+            FadeOut(dotS),
+            FadeOut(line1),
+            FadeOut(line2),
+            FadeOut(movingLine),
+            FadeOut(angle1),
+            FadeOut(text4),
+            FadeOut(arrow3)
+        )
+        self.play(Unwrite(title))
+
 
 class Test(Slide):
     def construct(self):
