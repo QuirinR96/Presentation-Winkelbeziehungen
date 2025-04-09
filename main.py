@@ -47,13 +47,13 @@ class IntroAngles(Slide):
 
         tracker = ValueTracker(0.1)
 
-        line1 = Line(ORIGIN, RIGHT*2)
-        line2 = Line(ORIGIN, RIGHT*2).rotate_about_origin(tracker.get_value()*DEGREES)
+        line1 = Line(ORIGIN, RIGHT * 2)
+        line2 = Line(ORIGIN, RIGHT * 2).rotate_about_origin(tracker.get_value() * DEGREES)
         referenceline = line2.copy()
 
         angle1 = Angle(line1, line2, radius=0.4)
 
-        text1 = Text(f"{round(tracker.get_value())}°").shift(UP*2.5)
+        text1 = Text(f"{round(tracker.get_value())}°").shift(UP * 2.5)
 
         self.play(Create(line1))
         self.play(Write(text1))
@@ -61,7 +61,7 @@ class IntroAngles(Slide):
 
         line2.add_updater(
             lambda line2: line2.become(referenceline.copy().rotate_about_origin(
-                tracker.get_value()*DEGREES
+                tracker.get_value() * DEGREES
             ))
         )
 
@@ -70,7 +70,7 @@ class IntroAngles(Slide):
         )
 
         text1.add_updater(
-            lambda text1: text1.become(Text(f"{round(tracker.get_value())}°").shift(UP*2.5))
+            lambda text1: text1.become(Text(f"{round(tracker.get_value())}°").shift(UP * 2.5))
         )
 
         self.next_slide()
@@ -89,14 +89,14 @@ class IntroAngles(Slide):
             run_time=3
         )
 
-        dotA = LabeledDot("A", radius=0.25).shift(UP*0.5)
+        dotA = LabeledDot("A", radius=0.25).shift(UP * 0.5)
 
-        line1 = Line(dotA, RIGHT*2 + UP*0.5)
-        line2 = Line(dotA, RIGHT*2 + UP*0.5).rotate(45*DEGREES, about_point=UP*0.5)
+        line1 = Line(dotA, RIGHT * 2 + UP * 0.5)
+        line2 = Line(dotA, RIGHT * 2 + UP * 0.5).rotate(45 * DEGREES, about_point=UP * 0.5)
 
         angle1 = Angle(line1, line2, radius=0.75)
 
-        label1 = MathTex(r"\alpha", color=RED).move_to(Angle(line1, line2, radius=0.75/1.5).point_from_proportion(0.5))
+        label1 = MathTex(r"\alpha", color=RED).move_to(Angle(line1, line2, radius=0.75 / 1.5).point_from_proportion(0.5))
 
         self.play(Create(dotA))
         self.play(
@@ -492,7 +492,6 @@ class Scheitelwinkel(Slide):
         )
 
         self.play(Unwrite(title))
-
 
 class Stufenwinkel(Slide):
     def construct(self):
